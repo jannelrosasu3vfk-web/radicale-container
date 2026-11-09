@@ -1,0 +1,2 @@
+# radicale-container
+stow dotfiles
